@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Divs</title>
+    <style>
+        .dynamic-div {
+            display: none;
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: lightgray;
+            padding: 10px;
+            border: 1px solid black;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="textbox1" placeholder="Click me">
+    <input type="text" id="textbox2" placeholder="Click me">
+    <input type="text" id="textbox3" placeholder="Click me">
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const textboxes = document.querySelectorAll('input[type="text"]');
+            textboxes.forEach((textbox, index) => {
+                textbox.addEventListener('focus', () => showDiv(index));
+            });
+
+            function showDiv(index) {
+                hideAllDivs();
+                let dynamicDiv = document.getElementById(`dynamic-div-${index}`);
+                if (!dynamicDiv) {
+                    dynamicDiv = createDynamicDiv(index);
+                    document.body.appendChild(dynamicDiv);
+                }
+                dynamicDiv.style.display = 'block';
+            }
+
+            function hideAllDivs() {
+                const dynamicDivs = document.querySelectorAll('.dynamic-div');
+                dynamicDivs.forEach(div => {
+                    div.style.display = 'none';
+                });
+            }
+
+            function createDynamicDiv(index) {
+                const div = document.createElement('div');
+                div.id = `dynamic-div-${index}`;
+                div.className = 'dynamic-div';
+                div.innerHTML = `This is div number ${index + 1}`;
+                div.addEventListener('click', () => {
+                    alert(`Div ${index + 1} clicked!`);
+                });
+                return div;
+            }
+        });
+    </script>
+</body>
+</html>
